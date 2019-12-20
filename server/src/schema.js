@@ -1,11 +1,8 @@
 const { gql } = require('apollo-server');
 
 const typeDefs = gql`
-
-
 type Query{
-    cortes:[corte]!
-    corte(numero: Int): corte
+    corte(numero: Int!, tipo: String): corte
 } 
 # Query para el Corte
 type corte{
