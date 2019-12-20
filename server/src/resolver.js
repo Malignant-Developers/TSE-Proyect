@@ -2,17 +2,11 @@ const dataCorte = require('./data/corteData.json')
 
 
 var getCorte = function(parent, args) {
-    console.log(args);
-    
-    let id = args.numero
-
-    return dataCorte.Recortes.filter(corte => {        
-        return corte.numero == id
-    })[0]
+    return dataCorte
 }
 
-var getCortes = () => {
-    return DataCorte
+var getCortes = function(parent, args){
+
 }
 
 var getEleccion = () => {
