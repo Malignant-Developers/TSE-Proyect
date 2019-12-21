@@ -1,34 +1,24 @@
-const dataCorte = require('./data/corteData.json')
+const dataCorte = require("./data/corteData.json");
 
-var getCorte = function(parent, args) { 
-    if (dataCorte.numero === args.numero) {   
-        if (args.tipo !== "") {   
-            let newData = Object.assign({}, dataCorte)          
-            let found = dataCorte.e.find(item => {
-                return item.id === args.tipo
-            })
-            newData.e = [found]
-            return newData
-        }else{
-            return dataCorte
-        }   
+var ObtenerCorte = function(parent, args) {   
+  if (args.tipo !== "") {
+    let corte = Object.assign({}, dataCorte)
+    let eleccion = dataCorte.e.find(eleccion => {
+      return eleccion.id.toLowerCase() === args.tipo.toLowerCase()
+    });
+    if (eleccion === undefined) {
+        return null
+    }else {
+        corte.e = [eleccion]
+        return corte
     }
-}
-
-var getCortes = function(parent, args){
-
-}
-
-var getEleccion = () => {
-    
-}
-// var root = {
-//     corte: getCorte,
-//     cortes: getCortes
-// }
+  } else {
+    return dataCorte
+  }
+};
 
 module.exports = {
-    Query:{
-        corte: getCorte 
-    }
-}
+  Query: {
+    corte: ObtenerCorte
+  }
+};
