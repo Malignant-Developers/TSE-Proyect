@@ -1,24 +1,70 @@
 const express = require('express')
 const router = express.Router()
 const {ObjectID} = require('mongodb')
+const request = require('request')
+
 //! Import the models
 const Corte = require('../models/corte')
 const Eleccion = require('../models/eleccion')
 const Votacion = require('../models/votos')
-//! Load static data
-const dataCorte = require('../db/staticdata')
-const dataEleccion = require('../db/eleccionData')
-const votosData = require('../db/votosData')
+
+const url = `https://tse-dummy-server.herokuapp.com/`
+
+const clearDataBase = async () => {
+    await Corte.remove({})
+    await Eleccion.remove({})
+    await Votacion.remove({})
+}
+
 
 //! Routes
 //? Obtener infomacion basica del corte
-router.get('/corte', async (req, res) => {
+router.get('/corte', async (req, response) => {
     try {
-        // let corte = new Corte(data)
-        // await corte.save()
+        clearDataBase()
 
-        const corte = await Corte.find({})
-        res.send(corte)
+        let data;
+        request(url, async (err, res, body) => {
+            const data = JSON.parse(body)
+            const {numero, fecha, hora} = data
+
+            //* Load basic data
+            const newCorte = new Corte({numero, fecha, hora})
+            await newCorte.save()
+
+            //* Load data for .e
+            const {e} = data
+            e.forEach(async (item) => {
+                const {id, l} = item
+                const newEleccion = new Eleccion({"e.id": id, "e.l": l, eleccion: numero})
+                await newEleccion.save()
+
+                const elecciones = await Eleccion.find({})
+                console.log(elecciones);
+                //TODO Load votos data into db, remember to write the eleccion _id for reference.
+            })
+
+            
+            //* Load data for .v
+
+            const eleccionA = data.e[0].l
+            //console.log(typeof(data.e[0].l));
+            // elecciones.forEach(item => {
+            //     console.log(item.id);
+                
+            // })
+
+            eleccionA.forEach(item => {
+                //console.log(item.v);
+                
+            })
+            
+        })
+
+        
+
+        //const corte = await Corte.find({})
+        //res.send(corte)
     } catch (error) {
         console.log(error);
         

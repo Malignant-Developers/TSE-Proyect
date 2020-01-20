@@ -11,8 +11,6 @@ app.use(express.json())
 //! Routers
 app.use(corteRouter)
 
-
-
 app.listen(PORT, (req,res) => {
     console.log('express server is up!');
 })

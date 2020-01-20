@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 //? Define the new schema
 const eleccionSchema = new mongoose.Schema({
-    e: [{
+    e: {
         id: {
             type: String,
             required: true
@@ -40,7 +40,7 @@ const eleccionSchema = new mongoose.Schema({
                 }
             }
         ]
-    }],
+    },
     eleccion: {
         type: Number,
         required: true,
