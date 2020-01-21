@@ -40,34 +40,23 @@ router.get('/corte', async (req, response) => {
                 await newEleccion.save()
 
                 const elecciones = await Eleccion.find({})
-                //console.log(elecciones[0].e.l);
+
+                //console.log(elecciones[0].e.l[1]);
+                //console.log(item.l[0]);
+                
                 //TODO Load votos data into db, remember to write the eleccion _id for reference.
                 elecciones[0].e.l.forEach(lugar => {
                     //! Hacer hardcode a cada parte de L, osea A y R
-                    item.l.forEach(voto => {
-                        console.log(voto.v);
-                        
+                    item.l[0].v.forEach(async (voto) => {
+                        const votacion = new voto({...voto, lugar: lugar._id})
+                        await votacion.save()
                     })
                 })
-                //console.log(item.l);
+
+
+
                   
             })
-
-            
-            //* Load data for .v
-
-            const eleccionA = data.e[0].l
-            //console.log(typeof(data.e[0].l));
-            // elecciones.forEach(item => {
-            //     console.log(item.id);
-                
-            // })
-
-            eleccionA.forEach(item => {
-                //console.log(item.v);
-                
-            })
-            
         })
 
         
