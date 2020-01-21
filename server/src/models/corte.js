@@ -20,7 +20,7 @@ const corteSchema = new mongoose.Schema({
 corteSchema.virtual('elecciones', {
     ref: 'Eleccion',
     localField: '_id',
-    foreignField: 'eleccion'
+    foreignField: 'corte'
 })
 
 //? Create the model and pass in the schema

@@ -11,6 +11,8 @@ app.use(express.json())
 //! Routers
 app.use(corteRouter)
 
+const {clearDataBase,loadData} = require('./utils/dataloader')
+
 app.listen(PORT, (req,res) => {
     console.log('express server is up!');
 })

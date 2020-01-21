@@ -20,10 +20,10 @@ const loadData = () => {
         const {e} = data
         e.forEach(async (item) => {
             const {id, l} = item
-            const newEleccion = new Eleccion({"e.id": id, "e.l": l, eleccion: _id })
+            const newEleccion = new Eleccion({"e.id": id, "e.l": l, corte:_id })
             await newEleccion.save()
     
-            const elecciones = await Eleccion.find({})
+            //const elecciones = await Eleccion.find({})
     
             //console.log(elecciones[0].e.l[1]);
             //console.log(item.l[0]);

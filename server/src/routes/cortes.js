@@ -34,9 +34,12 @@ router.get('/corte/:type', async (req, res) => {
         //? Match criteria
         const match = {e:{}} 
         match.e.id = type    
-        const corte = await Corte.find({})
-        await Corte.populate({
+        const corte = await Corte.findOne({})
+        console.log(corte);
+        
+        await corte.populate({
             path: 'elecciones',
+            model: 'Eleccion',
             match,
             options: {
                 limit: parseInt(req.query.limit),
@@ -44,8 +47,10 @@ router.get('/corte/:type', async (req, res) => {
             }
         }).execPopulate()
 
-        return res.send(corte)
+        return res.send(corte.elecciones)
     } catch (error) {
+        console.log(error);
+        
         return res.status(500).send()
     }
 })

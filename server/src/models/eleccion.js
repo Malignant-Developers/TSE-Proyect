@@ -41,8 +41,8 @@ const eleccionSchema = new mongoose.Schema({
             }
         ]
     },
-    eleccion: {
-        type: Number,
+    corte: {
+        type: mongoose.Types.ObjectId,
         required: true,
         ref: 'Corte'
     }
