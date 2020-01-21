@@ -3,11 +3,14 @@ const mongoose = require('mongoose')
 const votosSchema = new mongoose.Schema({
     v:[{
         codPartido: {
-            type: Number
+            type: Number,
+            required: true
         },
         votos: {
-            type: Number
-        }
+            type: Number,
+            required: true
+        },
+    
     }],
     lugar: {
         ref: 'Eleccion',

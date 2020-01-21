@@ -15,6 +15,14 @@ const corteSchema = new mongoose.Schema({
         required: true
     }
 })
+
+//? Virtual field for pagination
+corteSchema.virtual('elecciones', {
+    ref: 'Eleccion',
+    localField: '_id',
+    foreignField: 'eleccion'
+})
+
 //? Create the model and pass in the schema
 const Corte = mongoose.model('Corte', corteSchema)
 //? Export the modell

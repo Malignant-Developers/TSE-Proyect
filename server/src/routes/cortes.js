@@ -10,114 +10,48 @@ const Votacion = require('../models/votos')
 
 const url = `https://tse-dummy-server.herokuapp.com/`
 
-const clearDataBase = async () => {
-    await Corte.remove({})
-    await Eleccion.remove({})
-    await Votacion.remove({})
-}
-
-
 //! Routes
 //? Obtener infomacion basica del corte
-router.get('/corte', async (req, response) => {
+router.get('/corte', async (req, res) => {
     try {
-        clearDataBase()
-
-        let data;
-        request(url, async (err, res, body) => {
-            const data = JSON.parse(body)
-            const {numero, fecha, hora} = data
-
-            //* Load basic data
-            const newCorte = new Corte({numero, fecha, hora})
-            await newCorte.save()
-
-            //* Load data for .e
-            const {e} = data
-            e.forEach(async (item) => {
-                const {id, l} = item
-                const newEleccion = new Eleccion({"e.id": id, "e.l": l, eleccion: numero})
-                await newEleccion.save()
-
-                const elecciones = await Eleccion.find({})
-
-                //console.log(elecciones[0].e.l[1]);
-                //console.log(item.l[0]);
-                
-                //TODO Load votos data into db, remember to write the eleccion _id for reference.
-                elecciones[0].e.l.forEach(lugar => {
-                    //! Hacer hardcode a cada parte de L, osea A y R
-                    item.l[0].v.forEach(async (voto) => {
-                        const votacion = new voto({...voto, lugar: lugar._id})
-                        await votacion.save()
-                    })
-                })
-
-
-
-                  
-            })
-        })
-
-        
-
-        //const corte = await Corte.find({})
-        //res.send(corte)
-    } catch (error) {
-        console.log(error);
-        
+        const corte = await Corte.find({})
+        res.send(corte)
+    } catch (error) {  
         res.status(500).send(error)
     }
 })
 
+//* /corte/:type?limit=#?skip=#
+
 //? Obtener informacion basica del corte de alcaldes
-router.get('/corte/alcaldes', async (req, res) => {
+router.get('/corte/:type', async (req, res) => {
     try {
+        const type = req.params.type  
+        //* Get All
+        //const eleccion = await Eleccion.findOne({"e.id":type})
+        
+        //* Pagination
+        //? Match criteria
+        const match = {e:{}} 
+        match.e.id = type    
         const corte = await Corte.find({})
-        //console.log(corte[0].numero);
-        
-        // const dummyData = new Eleccion({...dataEleccion, eleccion: corte[0].numero})
-        // await dummyData.save()
+        await Corte.populate({
+            path: 'elecciones',
+            match,
+            options: {
+                limit: parseInt(req.query.limit),
+                skip: parseInt(req.query.skip)
+            }
+        }).execPopulate()
 
-        const eleccion = await Eleccion.findOne({},{
-            'e':
-                { $elemMatch: { id: 'A' } }
-        })
-        
-        res.send(eleccion)
+        return res.send(corte)
     } catch (error) {
-        console.log(error);
-        
-        res.status(500).send()
-    }
-})
-
-//? Obtener informacion basico del corte de regidores
-router.get('/corte/regidores', async (req, res) => {
-    try {
-        const corte = await Corte.find({})
-        //console.log(corte[0].numero);
-        
-        // const dummyData = new Eleccion({...dataEleccion, eleccion: corte[0].numero})
-        // await dummyData.save()
-
-        //? Find the 'eleccion' subdocument matching with the field id
-        const eleccion = await Eleccion.findOne({},{
-            'e':
-                { $elemMatch: { id: 'R' } }
-        })
-        
-        res.send(eleccion)
-    } catch (error) {
-        console.log(error);
-        
-        res.status(500).send()
+        return res.status(500).send()
     }
 })
 
 //? Obtener todas las votaciones del corte de alcaldes
 router.get('/corte/alcaldes/votos/:id', async (req, res) => {
-    const dummyData = votosData
     try {
         const eleccion = await Eleccion.findOne({},{
             'e':
