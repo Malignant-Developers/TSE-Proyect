@@ -3,24 +3,6 @@
 This is a REST API made by Malignant Developers in order to facilitate access to the Data provided by the original API. This API *for now* uses Mongo DB and Mongoose for ODM. It's main purpose is to provide pagination, match and sorting criteria.
 **This repo is still under development**
 
-# Files
-There are still some files to be removed but you should be focused *for now* on the following files.
-	src/
-	├── app.js
-	├── db
-	│   └── mongoose.js
-	├── models
-	│   ├── corte.js
-	│   ├── eleccion.js
-	│   ├── lugar.js
-	│   
-	├── routes
-	│   └── cortes.js
-	└── utils
-	    └── dataloader.js
-
-5 directories, 11 files
-
 ## Usage
 There are two main routes that you should be using:
  - /corte
