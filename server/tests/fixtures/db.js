@@ -19,7 +19,7 @@ const eleccionAlcalde = {
 
 const eleccionRegidorId = new mongoose.Types.ObjectId()
 const eleccionRegidor= {
-    "_id": eleccionAldeldeId,
+    "_id": eleccionRegidorId,
     "id": "A",
     "corte": corteId,
 }
@@ -237,12 +237,20 @@ module.exports = {
     setDataBase,
     corte, 
     corteId,
+    eleccionAlcaldeId,
     eleccionAlcalde,
+    eleccionRegidorId,
     eleccionRegidor,
+    lugarAlcaldeUnoId,
     lugarAlcaldeUno,
+    lugarAlcaldeDosId,
     lugarAlcaldeDos,
+    lugarAlcaldeTresId,
     lugarAlcaldeTres,
+    lugarRegidorUnoId,
     lugarRegidorUno,
+    lugarRegidorDosId,
     lugarRegidorDos,
+    lugarRegidorTresId,
     lugarRegidorTres
 }
