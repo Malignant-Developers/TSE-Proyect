@@ -183,7 +183,7 @@ const lugarRegidorDos = {
 }
 const lugarRegidorTresId = new mongoose.Types.ObjectId()
 const lugarRegidorTres = {
-    "_id": lugarRegidorTres,
+    "_id": lugarRegidorTresId,
     "nivel1": 1,
     "nivel2": 2,
     "nivel3": 0,
@@ -211,4 +211,38 @@ const lugarRegidorTres = {
         }
     ],
     eleccion: eleccionRegidorId
+}
+
+const setDataBase = async () => {
+    //* Whipe the database
+    await Lugar.deleteMany()
+    await Eleccion.deleteMany()
+    await Corte.deleteMany()
+
+    //* Save test data in the database
+    await  new Corte(corte).save()
+    await new Eleccion(eleccionAlcalde).save()
+    await new Eleccion(eleccionRegidor).save()
+    
+    await new Lugar(lugarAlcaldeUno).save()
+    await new Lugar(lugarAlcaldeDos).save()
+    await new Lugar(lugarAlcaldeTres).save()
+
+    await new Lugar(lugarRegidorUno).save()
+    await new Lugar(lugarRegidorDos).save()
+    await new Lugar(lugarRegidorTres).save()
+}
+
+module.exports = {
+    setDataBase,
+    corte, 
+    corteId,
+    eleccionAlcalde,
+    eleccionRegidor,
+    lugarAlcaldeUno,
+    lugarAlcaldeDos,
+    lugarAlcaldeTres,
+    lugarRegidorUno,
+    lugarRegidorDos,
+    lugarRegidorTres
 }
