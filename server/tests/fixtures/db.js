@@ -20,7 +20,7 @@ const eleccionAlcalde = {
 const eleccionRegidorId = new mongoose.Types.ObjectId()
 const eleccionRegidor= {
     "_id": eleccionRegidorId,
-    "id": "A",
+    "id": "R",
     "corte": corteId,
 }
 
