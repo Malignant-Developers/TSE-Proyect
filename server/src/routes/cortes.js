@@ -53,10 +53,4 @@ router.get('/corte/:type', async (req, res) => {
     }
 })
 
-//? Obtener informacion sobre una sola votacion de alcaldes
-router.get('/corte/alcaldes/votos/:id')
-
-//? Obtener informacion sobre una sola votacion de regidores
-router.get('/corte/regidores/votos/:id')
-
 module.exports = router
