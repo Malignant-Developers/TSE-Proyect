@@ -25,12 +25,8 @@ router.get('/corte/:type', async (req, res) => {
         const eleccion = await Eleccion.findOne({id:type})
 
         //* Pagination
-        //? Match criteria
-        // Todo Implement matching and sorting
         const sort = {}
-
-        const match = {}
-        
+ 
         //* Sorting
         if(req.query.sortBy){ 
             //? Split query at special character
@@ -41,9 +37,8 @@ router.get('/corte/:type', async (req, res) => {
 
         await eleccion.populate({
             path: 'lugares',
-            match,
             options: {
-                limit: parseInt(req.query.limit),
+                limit: parseInt(req.query.limit) || 10 ,
                 skip: parseInt(req.query.skip),
                 sort
             }
