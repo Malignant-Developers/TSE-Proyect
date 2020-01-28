@@ -12,27 +12,46 @@ const loadData = () => {
     return new Promise((resolve, reject) => {
         try {
             request(url, async (err, res, body) => {
+                
+                if(err){
+                    return reject(Error('Unable to load data'))
+                }
+                
+                //* Parse the data
                 const data = JSON.parse(body)
+                //* Destructure basic meta data
                 const { numero, fecha, hora } = data
 
-                //* Load basic data
+                //* Create te document from the model
                 const newCorte = new Corte({ numero, fecha, hora })
+                
+                //* Desturcture the id from the saved document
                 const { _id } = await newCorte.save()
                 const idEleccion = _id
 
-                //* Load data for .e
+                //* Destructure e array from data
                 const { e } = data
-                await e.forEach(async (item) => {
-                    const { id, l } = item
-                    const newEleccion = new Eleccion({ id, corte: idEleccion })
-                    const { _id } = await newEleccion.save()
 
+                //? For each element in E
+                e.forEach(async (eleccion) => {
+                    //* Destructure the id and l array
+                    const { id, l } = eleccion
+
+                    //* Create the document from the model
+                    const _eleccion = new Eleccion({ id, corte: idEleccion })
+
+                    //* Destructure the id from the saved document
+                    const { _id } = await _eleccion.save()
+
+                    //? For each element in the L array
                     l.forEach(async (lugar) => {
-                        const newLugar = new Lugar({ ...lugar, eleccion: _id })
-                        await newLugar.save()
+                        //* Create the document from the model
+                        const _lugar = new Lugar({ ...lugar, eleccion: _id })
+                        //* Save the document
+                        await _lugar.save()
                     })
                 }) 
-                setTimeout(() => { resolve(201) }, 30000)
+                setTimeout(() => { resolve(201) }, 10000)
             })
             
         } catch (e) {

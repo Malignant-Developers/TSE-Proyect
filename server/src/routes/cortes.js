@@ -21,22 +21,26 @@ router.get('/corte', async (req, res) => {
 //? Obtener informacion basica del corte de alcaldes
 router.get('/corte/:type', async (req, res) => {
     try {
-        const type = req.params.type
+        const { type } = req.params
         const eleccion = await Eleccion.findOne({id:type})
 
         //* Pagination
-        //? Match criteria
-        // Todo Implement matching and sorting
-        const match = {
-
+        const sort = {}
+ 
+        //* Sorting
+        if(req.query.sortBy){ 
+            //? Split query at special character
+            const parts =  req.query.sortBy.split(':')
+            //? Turnary operator
+            sort[parts[0]] = parts[1] === 'desc' ? -1 : 1  
         }
-        
+
         await eleccion.populate({
             path: 'lugares',
-            match,
             options: {
-                limit: parseInt(req.query.limit),
-                skip: parseInt(req.query.skip)
+                limit: parseInt(req.query.limit) || 10 ,
+                skip: parseInt(req.query.skip),
+                sort
             }
         }).execPopulate()
 
@@ -48,11 +52,5 @@ router.get('/corte/:type', async (req, res) => {
         return res.status(500).send()
     }
 })
-
-//? Obtener informacion sobre una sola votacion de alcaldes
-router.get('/corte/alcaldes/votos/:id')
-
-//? Obtener informacion sobre una sola votacion de regidores
-router.get('/corte/regidores/votos/:id')
 
 module.exports = router
