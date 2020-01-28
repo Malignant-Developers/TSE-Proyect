@@ -21,22 +21,31 @@ router.get('/corte', async (req, res) => {
 //? Obtener informacion basica del corte de alcaldes
 router.get('/corte/:type', async (req, res) => {
     try {
-        const type = req.params.type
+        const { type } = req.params
         const eleccion = await Eleccion.findOne({id:type})
 
         //* Pagination
         //? Match criteria
         // Todo Implement matching and sorting
-        const match = {
+        const sort = {}
 
-        }
+        const match = {}
         
+        //* Sorting
+        if(req.query.sortBy){ 
+            //? Split query at special character
+            const parts =  req.query.sortBy.split(':')
+            //? Turnary operator
+            sort[parts[0]] = parts[1] === 'desc' ? -1 : 1  
+        }
+
         await eleccion.populate({
             path: 'lugares',
             match,
             options: {
                 limit: parseInt(req.query.limit),
-                skip: parseInt(req.query.skip)
+                skip: parseInt(req.query.skip),
+                sort
             }
         }).execPopulate()
 
