@@ -46,7 +46,9 @@ With this endpoint you have access to the main bulk of data, it provides paginat
 #### Example Output
 
 In your preferred API Client access the following endpoint (remember to run the server):
+
 ```localhost/corte/A?limit=3&skip=0&sortBy=electores:desc```
+
 This endpoint will limit the output to 3 documents for the Election of type 'A' or 'Alcalde', access the page number 0 and sort by 'electores' in a descending manner.
 
 ```json
