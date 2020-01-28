@@ -3,12 +3,17 @@
 This is a REST API made by Malignant Developers in order to facilitate access to the Data provided by the original API. This API *for now* uses Mongo DB and Mongoose for ODM. It's main purpose is to provide pagination, match and sorting criteria.
 **This repo is still under development**
 
-## Usage
+## Enpoints
+
 There are two main routes that you should be using:
+
  - /corte
  - /corte/:type?params
+
 ### /Corte
-This endpoint returns basic meta-data, please remember Mongoose adds a extra field for versioning so this extra __v is not provided with the original data set.
+
+This endpoint returns basic meta-data, please remember Mongoose adds a extra field for version control so this extra __v is not provided with the original data set.
+
 ```json
 [
 
@@ -30,15 +35,20 @@ This endpoint returns basic meta-data, please remember Mongoose adds a extra fie
 ```
 
 ### /corte/:type?params
+
 With this endpoint you have access to the main bulk of data, it provides pagination (limit and sort), search criteria and sorting (*both soon to be added*).
+
 #### Usage
 
- 1. Provide a type for the Election type, accepted values: 'A' or 'R'
- 2. Provided parameters, this is used for limiting the original data set (made out of +6000 lines per type). This supports 'limit' and 'skip' to archive pagination.
+  1. Provide a type for the Election type, accepted values: 'A' or 'R'
+  2. Provide parameters, this is used for limiting the original data set (made out of +6000 lines per type). This supports 'limit' and 'skip' to archive pagination and sorting.
+
 #### Example Output
+
 In your preferred API Client access the following endpoint (remember to run the server):
-```localhost/corte/A?limit=2&skip=1```
-This endpoint will limit the output to two documents for the Election of type 'A' or 'Alcalde' and access the page number 2
+```localhost/corte/A?limit=3&skip=0&sortBy=electores:desc```
+This endpoint will limit the output to 3 documents for the Election of type 'A' or 'Alcalde', access the page number 0 and sort by 'electores' in a descending manner.
+
 ```json
 [
 	{
@@ -102,21 +112,39 @@ This endpoint will limit the output to two documents for the Election of type 'A
 	}
 ]
 ```
- 
+
 ## Installation
 
 Install dependencies:
-```terminal
+
+```
 npm i
 ```
-Start the server using nodemon:
+
+Start the server:
+
 ```
-npm run dev
+npm run start
 ```
+
+There is a function which loads up the data over at index.js, if this is your first time using this server, do remember to call it.
+
+```javascript
+const app = require('./app')
+const {clearDataBase,loadData} = require('./utils/dataloader')
+
+// clearDataBase()
+loadData().then(result => console.log(result))
+
+const PORT = 3000 | process.env.PORT
+
+app.listen(PORT, (req,res) => {
+    console.log('express server is up!');
+})
+```
+
 ## Features Under Development
 
- 1. Sorting and Matching
- 2. Migration into TypeScript
- 3. Migration into MySql and Sqlize odm
- 4. Code Refractoring
-
+  1. ~~Sorting~~
+  2. Migration into MySql and Sqlize odm
+  3. Migration into TypeScript
