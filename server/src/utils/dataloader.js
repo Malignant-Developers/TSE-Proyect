@@ -50,8 +50,8 @@ const loadData = () => {
                         //* Save the document
                         await _lugar.save()
                     })
+                    resolve(201)
                 }) 
-                setTimeout(() => { resolve(201) }, 10000)
             })
             
         } catch (e) {
