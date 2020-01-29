@@ -1,8 +1,12 @@
 const app = require('./app')
 const {clearDataBase,loadData} = require('./utils/dataloader')
 
-// clearDataBase()
-//loadData().then(result => console.log(result))
+
+setInterval(() => {
+    console.log('Rewriting data');
+    clearDataBase()
+    loadData().then(result => console.log(result))
+}, 30000);
 
 const PORT = 3000 | process.env.PORT
 
